@@ -1,0 +1,30 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #2a74b9; /* Primary Blue */
+  --ifm-color-primary-dark: #245f9b; /* Darker Blue */
+  --ifm-color-primary-darker: #1f4f7d; /* Even Darker Blue */
+  --ifm-color-primary-darkest: #1a3f5f; /* Darkest Blue */
+  --ifm-color-primary-light: #3688d4; /* Lighter Blue */
+  --ifm-color-primary-lighter: #4a9fea; /* Even Lighter Blue */
+  --ifm-color-primary-lightest: #85c1f0; /* Lightest Blue */
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(42, 116, 185, 0.1); /* Soft Blue Highlight */
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #4a9fea; /* Vibrant Light Blue */
+  --ifm-color-primary-dark: #3688d4; /* Slightly Darker Vibrant Blue */
+  --ifm-color-primary-darker: #2a74b9; /* Mid-Tone Blue */
+  --ifm-color-primary-darkest: #1f4f7d; /* Dark Blue */
+  --ifm-color-primary-light: #5ab0f3; /* Brighter Light Blue */
+  --ifm-color-primary-lighter: #6fc5f9; /* Brighter Soft Blue */
+  --ifm-color-primary-lightest: #a1dfff; /* Very Light Blue */
+  --docusaurus-highlighted-code-line-bg: rgba(42, 116, 185, 0.3); /* Enhanced Blue Highlight */
+}
