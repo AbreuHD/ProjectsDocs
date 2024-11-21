@@ -28,7 +28,7 @@ const config: Config = {
   // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'es'],
+    locales: ['en'],
   },
 
   presets: [
@@ -77,9 +77,26 @@ const config: Config = {
       } satisfies Preset.Options,
     ],
   ],
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        indexBlog: false,
+        indexDocs: true,
+        docsRouteBasePath: "/",
+        hashed: true,
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+      },
+    ]
+  ],
 
   themeConfig: {
-    // Replace with your project's social card
+    colorMode: {
+      defaultMode: 'dark',
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
+    },
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'Bidehan',
@@ -96,11 +113,12 @@ const config: Config = {
         //},
         {
           type: 'docsVersionDropdown',
+          position: 'right'
         },
-        {
-          type: 'localeDropdown',
-          position: 'left',
-        },
+        //{
+        //  type: 'localeDropdown',
+        //  position: 'left',
+        //},
         //{to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/AbreuHD/Bidehan',
@@ -110,18 +128,7 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/AbreuHD/Bidehan',
-            },
-          ],
-        },
-      ],
+      style: 'light',
       copyright: `Copyright © ${new Date().getFullYear()} Bidehan, Built with ❤️ and <a href="https://docusaurus.io">Docusaurus</a>.`,
     },
     prism: {
