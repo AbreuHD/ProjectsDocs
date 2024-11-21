@@ -27,7 +27,6 @@ pipeline {
             }
         }
     }
-    
     post {
         success {
             echo 'Pipeline ejecutado exitosamente y archivos subidos por FTP.'
