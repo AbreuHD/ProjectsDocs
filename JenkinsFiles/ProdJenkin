@@ -1,0 +1,51 @@
+pipeline {
+    agent { label 'United_States' }
+    environment {
+        FTP_SERVER = credentials('abreu_fpt_host')
+        FTP_USER = credentials('abreu_ftp_user')
+        FTP_PASSWORD = credentials('abreu_ftp_password')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/AbreuHD/ProjectsDocs.git'
+                    ]]
+                ])
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Build Docusaurus') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+        stage('Deploy to FTP') {
+            steps {
+                script {
+                    def buildDir = 'build'
+                    sh """
+                    curl -T ${buildDir}/* ftp://$FTP_SERVER/Bidehan.abreuhd.com --user $FTP_USER:$FTP_PASSWORD
+                    """
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Pipeline ejecutado exitosamente y archivos subidos por FTP.'
+        }
+        failure {
+            echo 'Hubo un problema durante la ejecución del pipeline.'
+        }
+    }
+}
