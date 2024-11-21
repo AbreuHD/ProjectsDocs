@@ -2,8 +2,6 @@ pipeline {
     agent { label 'United_States' }
     environment {
         FTP_SERVER = credentials('abreu_fpt_host')
-        FTP_USER = credentials('abreu_ftp_user')
-        FTP_PASSWORD = credentials('abreu_ftp_password')
         FTP_PATH = 'Bidehan.abreuhd.com'
     }
     stages {
