@@ -4,6 +4,7 @@ pipeline {
         FTP_SERVER = credentials('abreu_fpt_host')
         FTP_USER = credentials('abreu_ftp_user')
         FTP_PASSWORD = credentials('abreu_ftp_password')
+        FTP_PATH = 'Bidehan.abreuhd.com'
     }
     stages {
         stage('Checkout') {
@@ -31,10 +32,9 @@ pipeline {
         }
         stage('Deploy to FTP') {
             steps {
-                script {
-                    def buildDir = 'build'
+                withCredentials([usernamePassword(credentialsId: 'abreu_ftp_credentials', usernameVariable: 'FTP_USER', passwordVariable: 'FTP_PASSWORD')]) {
                     sh """
-                    curl -T ${buildDir}/* ftp://$FTP_SERVER/Bidehan.abreuhd.com --user $FTP_USER:$FTP_PASSWORD
+                        curl -T build/* ftp://$FTP_SERVER/$FTP_PATH --user $FTP_USER:$FTP_PASSWORD
                     """
                 }
             }
