@@ -2,24 +2,8 @@ pipeline {
     agent { label 'United_States' }
     environment {
         FTP_SERVER = credentials('abreu_fpt_host')
-        FTP_USER = credentials('abreu_ftp_user')
-        FTP_PASSWORD = credentials('abreu_ftp_password')
-        FTP_PATH = 'Bidehan.abreuhd.com'
     }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    doGenerateSubmoduleConfigurations: false,
-                    extensions: [],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/AbreuHD/ProjectsDocs.git'
-                    ]]
-                ])
-            }
-        }
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -32,10 +16,20 @@ pipeline {
         }
         stage('Deploy to FTP') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'abreu_ftp_credentials', usernameVariable: 'FTP_USER', passwordVariable: 'FTP_PASSWORD')]) {
-                    sh """
-                        curl -T build/* ftp://$FTP_SERVER/$FTP_PATH --user $FTP_USER:$FTP_PASSWORD
-                    """
+                withCredentials([usernamePassword(credentialsId: 'abreu_ftp_args', usernameVariable: 'FTP_USER', passwordVariable: 'FTP_PASSWORD')]) {
+                    sh '''
+                        if [ -d build ]; then
+                            lftp -e "
+                                set ssl:verify-certificate no;
+                                open ftp://$FTP_USER:$FTP_PASSWORD@$FTP_SERVER;
+                                mirror -R build .;
+                                bye;
+                            "
+                        else
+                            echo "Directorio build no encontrado. No hay archivos para subir."
+                            exit 1
+                        fi
+                    '''
                 }
             }
         }
