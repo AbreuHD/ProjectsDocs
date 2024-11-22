@@ -20,11 +20,12 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'abreu_ftp_credentials', usernameVariable: 'FTP_USER', passwordVariable: 'FTP_PASSWORD')]) {
                     sh '''
                         if [ -d build ]; then
-                            for file in build/*; do
-                                if [ -f "$file" ]; then
-                                    curl --ftp-pasv -T "$file" ftp://$FTP_SERVER/$FTP_PATH --user $FTP_USER:$FTP_PASSWORD
-                                fi
-                            done
+                            lftp -e "
+                                set ssl:verify-certificate no;
+                                open ftp://$FTP_USER:$FTP_PASSWORD@$FTP_SERVER;
+                                mirror -R build .;
+                                bye;
+                            "
                         else
                             echo "Directorio build no encontrado. No hay archivos para subir."
                             exit 1
