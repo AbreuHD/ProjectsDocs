@@ -22,7 +22,7 @@ pipeline {
                         if [ -d build ]; then
                             for file in build/*; do
                                 if [ -f "$file" ]; then
-                                    curl -T "$file" ftp://$FTP_SERVER/$FTP_PATH --user $FTP_USER:$FTP_PASSWORD
+                                    curl --ftp-pasv -T "$file" ftp://$FTP_SERVER/$FTP_PATH --user $FTP_USER:$FTP_PASSWORD
                                 fi
                             done
                         else
